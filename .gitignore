@@ -1,0 +1,24 @@
+# Compiled files
+target/
+*.class
+
+# IDE files
+.idea/
+*.iml
+.vscode/
+.settings/
+.project
+.classpath
+
+# Logs
+*.log
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# 🔥 CRITICAL: Don't commit sensitive files
+application.properties
+application-dev.properties
+application-prod.properties
+*.env

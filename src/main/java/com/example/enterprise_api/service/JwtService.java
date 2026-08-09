@@ -27,17 +27,17 @@ public class JwtService {
     private final UserRepository userRepository;
     private final PasswordEncoder passwordEncoder;
 
-    // 🔥 All values from properties (Zero hardcoding)
-    @Value("${app.default.client-id}")
+    // ✅ Saare defaults add kar diye
+    @Value("${app.default.client-id:web-client}")
     private String defaultClientId;
 
-    @Value("${app.jwt.issuer}")
+    @Value("${app.jwt.issuer:https://api.enterprise.com}")
     private String issuer;
 
-    @Value("${app.jwt.default-scope}")
+    @Value("${app.jwt.default-scope:benefits.read}")
     private String defaultScope;
 
-    @Value("${app.jwt.expiration-seconds}")
+    @Value("${app.jwt.expiration-seconds:900}")
     private long jwtExpiration;
 
     public JwtService(@Value("${spring.security.oauth2.resourceserver.jwt.secret}") String secret,
@@ -65,11 +65,11 @@ public class JwtService {
         Instant now = Instant.now();
         String accessToken = Jwts.builder()
                 .subject(user.getId())
-                .issuer(issuer)  // ✅ Dynamic
+                .issuer(issuer)
                 .claim("client_id", user.getClientId())
-                .claim("scope", defaultScope)  // ✅ Dynamic
+                .claim("scope", defaultScope)
                 .issuedAt(Date.from(now))
-                .expiration(Date.from(now.plus(jwtExpiration, ChronoUnit.SECONDS))) // ✅ Dynamic
+                .expiration(Date.from(now.plus(jwtExpiration, ChronoUnit.SECONDS)))
                 .signWith(key, SignatureAlgorithm.HS256)
                 .compact();
 
@@ -91,7 +91,7 @@ public class JwtService {
         user.setPassword(passwordEncoder.encode(request.getPassword()));
         user.setFirstName(request.getFirstName());
         user.setLastName(request.getLastName());
-        user.setClientId(defaultClientId);  // ✅ Dynamic
+        user.setClientId(defaultClientId);
         user.setStatus("ACTIVE");
         user.setCreatedAt(LocalDateTime.now());
         user.setUpdatedAt(LocalDateTime.now());

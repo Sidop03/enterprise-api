@@ -20,14 +20,16 @@ import java.util.Arrays;
 @EnableMethodSecurity
 public class SecurityConfig {
 
+    // 🔥 Isme default nahi daalna (Secret sensitive hai, properties/env se aana chahiye)
     @Value("${spring.security.oauth2.resourceserver.jwt.secret}")
     private String jwtSecret;
 
-    @Value("${app.cors.allowed-origins}")
+    // ✅ Isme default daal diya
+    @Value("${app.cors.allowed-origins:http://localhost:3000,http://localhost:5173}")
     private String[] allowedOrigins;
 
-    // Public paths dynamic hain
-    @Value("${app.security.public-paths}")
+    // ✅ Isme default daal diya
+    @Value("${app.security.public-paths:/auth/**,/auth2/**,/actuator/health,/actuator/info,/swagger-ui/**,/v3/api-docs/**}")
     private String[] publicPaths;
 
     @Bean
@@ -36,7 +38,7 @@ public class SecurityConfig {
                 .csrf(csrf -> csrf.disable())
                 .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .authorizeHttpRequests(auth -> {
-                    auth.requestMatchers(publicPaths).permitAll(); // ✅ Dynamic
+                    auth.requestMatchers(publicPaths).permitAll();
                     auth.anyRequest().authenticated();
                 })
                 .addFilterBefore(jwtAuthenticationFilter(), UsernamePasswordAuthenticationFilter.class)
@@ -58,7 +60,7 @@ public class SecurityConfig {
     @Bean
     public CorsConfigurationSource corsConfigurationSource() {
         CorsConfiguration configuration = new CorsConfiguration();
-        configuration.setAllowedOrigins(Arrays.asList(allowedOrigins)); // ✅ Dynamic
+        configuration.setAllowedOrigins(Arrays.asList(allowedOrigins));
         configuration.setAllowedMethods(Arrays.asList("GET", "POST", "PUT", "DELETE", "OPTIONS"));
         configuration.setAllowedHeaders(Arrays.asList("*"));
         configuration.setExposedHeaders(Arrays.asList("X-Request-ID", "ETag", "Cache-Control"));

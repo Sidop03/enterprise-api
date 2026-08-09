@@ -13,10 +13,10 @@ import java.util.concurrent.TimeUnit;
 @Component
 public class CacheUtil {
 
-    @Value("${app.cache.ttl-seconds}")
+    @Value("${app.cache.ttl-seconds:300}")
     private int ttlSeconds;
 
-    @Value("${app.cache.max-size}")
+    @Value("${app.cache.max-size:10000}")
     private int maxSize;
 
     private Cache<String, Object> cache;
@@ -24,8 +24,8 @@ public class CacheUtil {
     @PostConstruct
     public void init() {
         this.cache = Caffeine.newBuilder()
-                .expireAfterWrite(ttlSeconds, TimeUnit.SECONDS)  // ✅ Dynamic
-                .maximumSize(maxSize)  // ✅ Dynamic
+                .expireAfterWrite(ttlSeconds, TimeUnit.SECONDS)
+                .maximumSize(maxSize)
                 .recordStats()
                 .build();
         log.info("✅ Cache initialized with TTL={}s, MaxSize={}", ttlSeconds, maxSize);

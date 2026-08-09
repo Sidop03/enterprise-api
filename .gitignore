@@ -18,7 +18,6 @@ target/
 Thumbs.db
 
 # 🔥 CRITICAL: Don't commit sensitive files
-application.properties
 application-dev.properties
 application-prod.properties
 *.env

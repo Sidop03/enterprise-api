@@ -20,15 +20,12 @@ import java.util.Arrays;
 @EnableMethodSecurity
 public class SecurityConfig {
 
-    // 🔥 Isme default nahi daalna (Secret sensitive hai, properties/env se aana chahiye)
     @Value("${spring.security.oauth2.resourceserver.jwt.secret}")
     private String jwtSecret;
 
-    // ✅ Isme default daal diya
     @Value("${app.cors.allowed-origins:http://localhost:3000,http://localhost:5173}")
     private String[] allowedOrigins;
 
-    // ✅ Isme default daal diya
     @Value("${app.security.public-paths:/auth/**,/auth2/**,/actuator/health,/actuator/info,/swagger-ui/**,/v3/api-docs/**}")
     private String[] publicPaths;
 

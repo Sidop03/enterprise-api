@@ -8,9 +8,7 @@ import java.util.Optional;
 @Repository
 public interface UserRepository extends JpaRepository<User, String> {
 
-    // 1. Exact match (Original)
     Optional<User> findByEmail(String email);
 
-    // 2. 🔥 NEW: Case-insensitive search (Ignores uppercase/lowercase)
     Optional<User> findByEmailIgnoreCase(String email);
 }

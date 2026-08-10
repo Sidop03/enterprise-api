@@ -31,7 +31,6 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
 
     @Override
     protected boolean shouldNotFilter(HttpServletRequest request) throws ServletException {
-        // 🔥 CRITICAL: Use servlet path (after context path), e.g., /auth2/test
         String servletPath = request.getServletPath();
 
         if (publicPaths == null) return false;
